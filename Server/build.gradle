@@ -1,0 +1,21 @@
+group "com.nerdery"
+version "1.0.0.0"
+
+apply plugin: "java"
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+
+ext{
+    archiveType = "server"
+    entry = "com.nerdery.powwow.PowWowServer"
+}
+
+repositories{
+    mavenCentral()
+    jcenter()
+}
+
+dependencies{
+    compile project(":powwow-core")
+    compile "org.slf4j:slf4j-simple:${rootProject.ext.config.slf4j_version}"
+}

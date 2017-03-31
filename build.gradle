@@ -1,0 +1,52 @@
+group "com.nerdery"
+version "1.0.0.0"
+
+apply plugin: "idea"
+
+file "build.properties" withReader{
+    def props = new Properties()
+    props.load(it)
+    ext.config = new ConfigSlurper().parse(props)
+}
+
+subprojects{
+    apply plugin: "idea"
+    apply plugin: "java"
+    targetCompatibility = 1.8
+    sourceCompatibility = 1.8
+
+    def propsFile = file("build.properties")
+    if(propsFile.exists()){
+        ext.config = new Properties()
+        ext.config.load(new FileInputStream(propsFile))
+    }
+
+    repositories{
+        mavenCentral()
+        jcenter()
+    }
+
+    task fatjar(type: Jar){
+        afterEvaluate{ Project project ->
+            baseName = "PowWow-${project.archiveType}"
+            from {
+                configurations.compile.collect{
+                    it.isDirectory() ? it : zipTree(it)
+                }
+            }
+            with jar
+            manifest{
+                attributes "Implementation-Title": baseName
+                attributes "Main-Class": "${project.entry}"
+            }
+        }
+    }
+
+    dependencies{
+        testCompile "junit:junit:${rootProject.ext.config.junit_version}"
+        compile "org.slf4j:slf4j-api:${rootProject.ext.config.slf4j_version}"
+        compile "com.google.guava:guava:${rootProject.ext.config.guava_version}"
+        compile "com.google.inject:guice:${rootProject.ext.config.guice_version}"
+        compile "io.netty:netty-all:${rootProject.ext.config.netty_version}"
+    }
+}

@@ -1,0 +1,16 @@
+group "com.nerdery"
+version "1.0.0.0"
+
+apply plugin: "java"
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+
+ext{
+    archiveType = "core"
+    entry = "com.nerdery.powwow.PowWowCore"
+}
+
+repositories{
+    mavenCentral()
+    jcenter()
+}
