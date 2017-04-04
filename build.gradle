@@ -44,6 +44,8 @@ subprojects{
 
     dependencies{
         testCompile "junit:junit:${rootProject.ext.config.junit_version}"
+
+        compile "org.ow2.asm:asm-all:${rootProject.ext.config.asm_version}"
         compile "org.slf4j:slf4j-api:${rootProject.ext.config.slf4j_version}"
         compile "com.google.guava:guava:${rootProject.ext.config.guava_version}"
         compile "com.google.inject:guice:${rootProject.ext.config.guice_version}"

@@ -6,6 +6,11 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
 public abstract class PowWowPacket{
+    public static interface TransposingInfo<T extends PowWowPacket>{
+        public String getTypeAlias();
+        public String getType();
+    }
+
     public static interface Encoder<T extends PowWowPacket>{
         public void encode(T tPacket, ByteBuf buf);
     }

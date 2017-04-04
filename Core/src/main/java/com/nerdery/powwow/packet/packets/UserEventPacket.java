@@ -1,12 +1,15 @@
-package com.nerdery.powwow.packet;
+package com.nerdery.powwow.packet.packets;
 
+import com.nerdery.powwow.packet.PacketIdentifier;
+import com.nerdery.powwow.packet.PowWowPacket;
+import com.nerdery.powwow.packet.PowWowPackets;
 import io.netty.buffer.ByteBuf;
 
 import javax.inject.Singleton;
 
 @PacketIdentifier(PowWowPackets.USER_EVENT_PACKET)
 public final class UserEventPacket
-extends PowWowPacket{
+extends PowWowPacket {
     public enum EventType{
         CONNECT,
         DISCONNECT;
@@ -29,7 +32,7 @@ extends PowWowPacket{
     }
 
     @Singleton
-    protected static final class Codec
+    public static final class Codec
     extends PowWowPacket.Codec<UserEventPacket>{
         @Override
         public void encode(UserEventPacket tPacket, ByteBuf buf) {
