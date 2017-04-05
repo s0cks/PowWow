@@ -8,8 +8,16 @@ public final class PowWowPacketProvider{
     @SuppressWarnings("unchecked")
     public <T extends PowWowPacket> T decode(Injector injector, ByteBuf buf){
         Key decoderKey = Key.get(PowWowPacket.Decoder.class, PacketIdentifiers.identifiedBy(buf.readInt()));
-        PowWowPacket.Decoder<T> decoder = ((PowWowPacket.Decoder<T>) injector.getInstance(decoderKey));
-        return decoder.decode(buf);
+
+        System.out.println("Finding: " + decoderKey);
+
+        try{
+            PowWowPacket.Decoder<T> decoder = ((PowWowPacket.Decoder<T>) injector.getInstance(decoderKey));
+            return decoder.decode(buf);
+        } catch(Exception e){
+            // Fallthrough Silently
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -20,6 +28,10 @@ public final class PowWowPacketProvider{
             ident = identifier.value();
         } catch(Exception e){
             throw new IllegalStateException("Invalid packet: " + packet.getClass().getSimpleName());
+        }
+
+        if(ident == 0){
+            System.err.println("Found packet with ID#0: " + packet.getClass().getSimpleName());
         }
 
         Key encoderKey = Key.get(PowWowPacket.Encoder.class, PacketIdentifiers.identifiedBy(ident));

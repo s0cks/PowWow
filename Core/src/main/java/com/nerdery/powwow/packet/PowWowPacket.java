@@ -1,22 +1,29 @@
 package com.nerdery.powwow.packet;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
 public abstract class PowWowPacket{
-    public static interface TransposingInfo<T extends PowWowPacket>{
-        public String getTypeAlias();
-        public String getType();
-    }
-
     public static interface Encoder<T extends PowWowPacket>{
         public void encode(T tPacket, ByteBuf buf);
     }
 
     public static interface Decoder<T extends PowWowPacket>{
         public T decode(ByteBuf buf);
+    }
+
+    public static final class ChannelSpecificPacket<T extends PowWowPacket>
+    extends PowWowPacket{
+        public final T owner;
+        public final Channel channel;
+
+        public ChannelSpecificPacket(T owner, Channel channel){
+            this.channel = channel;
+            this.owner = owner;
+        }
     }
 
     public static abstract class Codec<T extends PowWowPacket>
